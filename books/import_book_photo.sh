@@ -7,8 +7,8 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SCHEMA="$ROOT_DIR/books/book_metadata_schema.json"
-photo_path="$(printf '%s' "$1" | sed -e 's/^file:\/\///' -e 's/^"//' -e 's/"$//' -e 's/\\ / /g' -e 's/\\_/_/g')"
-[[ -f "$photo_path" ]] || { printf 'Photo not found: %s\n' "$photo_path" >&2; exit 1; }
+photo_path="$(bash "$ROOT_DIR/books/normalize_dropped_path.sh" "$1")"
+[[ -f "$photo_path" ]] || { printf 'Photo not found: %q\n' "$photo_path" >&2; exit 1; }
 command -v codex >/dev/null 2>&1 || { printf 'Codex CLI is required for photo import. Install and sign in to Codex first.\n' >&2; exit 1; }
 command -v jq >/dev/null 2>&1 || { printf 'jq is required to read Codex metadata output.\n' >&2; exit 1; }
 

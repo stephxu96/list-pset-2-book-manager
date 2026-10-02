@@ -1,88 +1,134 @@
-# Learning Library Demo Script
+# Learning Library — Full Demo Walkthrough
 
-Use this as a 2-3 minute narrated screen recording. It demonstrates the required Book Manager behaviors. Do not record setup or menu fallback messages.
+This is the end-to-end demo checklist and narration for the main-menu features: browse, add, video library, photo import, search, recommendations, and quit. Allow about 5–7 minutes; the live recommendation run may take a little longer while Codex responds.
 
 ## Before recording
 
-1. Run `./scripts/setup.sh --install` once. Confirm that Gum is available.
-2. Use a large terminal window with readable text.
-3. Have a clear photo containing one or more book covers or spines ready to drag into the terminal.
-4. Run `./app.sh`. Start the screen recording when the flip-book welcome animation appears; the open-book mark remains visible above the main-menu choices.
+1. Make sure Gum, `jq`, and the Codex CLI are installed. Sign in to Codex and confirm `codex` works. `./scripts/setup.sh` checks prerequisites; use `./scripts/setup.sh --install` only if Gum still needs installing.
+2. Run `./tests/run_tests.sh` once. The app’s live recommendations need connectivity and a signed-in Codex CLI.
+3. For a safe demo, record from a disposable copy of the project so Add and photo import cannot change the library in the actual repo:
 
-## Scene 1 — Introduction and browse (0:00-0:20)
+   ```bash
+   DEMO_ROOT="$(mktemp -d /tmp/learning-library-demo.XXXXXX)"
+   cp -R "$PWD"/. "$DEMO_ROOT"/
+   cd "$DEMO_ROOT"
+   ./app.sh
+   ```
 
-**Action:** Choose **Browse Learning Library**.
+   The copy includes current project files and data. Any demo-only entries or photo imports stay in that temporary copy. Do not add fake/test records to the real project data.
+4. Enlarge the terminal, use a clear photo of books you actually want in the demo library, and start recording just before launch. Review the photo’s detected titles; cancel if any are wrong.
+
+The app returns to the main menu after each feature. At each “press Enter” pause, press Enter and choose the next menu option. The book banner remains visible above the menu.
+
+## Run of show and narration
+
+### 1. Launch and browse the full library
+
+**Action:** Start `./app.sh`, then choose **Browse Learning Library**. Pause on the full table and return to the menu.
 
 **Narration:**
 
-> This is Learning Library, my personal Bash application for deciding what to read, listen to, or watch next. It combines Kindle and Audible titles with physical books, climbing guidebooks, and video content. The library is organized around my interests in AI, entrepreneurship, operations, mental health, career development, climbing, physiology, and economics.
+> Learning Library is a Bash command-line app for deciding what to read, listen to, or watch next. My library combines Kindle and Audible titles, physical books, climbing guidebooks, and video. Amazon is the provider, with Kindle and Audible as its formats. The other content types have their own providers and details.
 
-**What this proves:** Gum UI, persistent library, mixed content types, personalization.
+**Shows:** Launch animation/banner, Gum main menu, saved library across content types, and return-to-menu flow.
 
-## Scene 2 — Search the saved library (0:20-0:35)
+### 2. Add Free Solo as a climbing video
 
-**Action:** Choose **Search Library** and search for `career`.
-
-**Narration:**
-
-> I can search my saved content across formats. Here are career-related titles, including product-management and coding books. The search component receives my request and asks the data layer for matching records; the rest of the app does not read the CSV directly.
-
-**What this proves:** Search workflow, Book component, data-layer boundary.
-
-## Scene 3 — Saved-first Concierge recommendation (0:35-1:05)
-
-**Action:** Choose **Ask Learning Concierge**. Enter:
+**Action:** Choose **Add Book, Audio, Video, or Guidebook** and enter:
 
 ```text
-I need PM career advice in a medium-energy book.
+Title: Free Solo
+Creator: Alex Honnold
+Content type: video
+Provider: YouTube
+Topic: climbing
+Status: want_to_watch
+Why save it?: curiosity
+Energy: low
 ```
+
+Show the saved confirmation and return to the menu. Add it only if it is not already present in the demo library.
 
 **Narration:**
 
-> The Learning Concierge accepts one natural-language request and extracts my available energy, preferred format, and time from it. It starts three recommendation agents in parallel: one considers my history, one matches my interests, and one looks for discovery options. The status line shows that work is happening while the agents run.
+> I can add books, audiobooks, videos, and guidebooks. Here I’m adding Free Solo as a YouTube climbing video. The app records its creator, topic, status, reason, and energy in the library.
 
-> Because I already own relevant books, it gives me a “Start from your library” shortlist, including my PM-career and PM-interview books.
+**Shows:** Add workflow, video provider choice, metadata capture, and persistence. In the disposable demo copy this entry stays only until that copy is discarded.
 
-**What this proves:** Natural-language input, personalization, parallelization, `$!`, `wait`, streaming/progress, saved-first matching.
+**Content-type choices in Add:**
 
-## Scene 4 — New video discovery (1:05-1:35)
+| Type | Provider choices | Status choices |
+|---|---|---|
+| Text | Amazon, Physical, Other | want to read, reading, finished |
+| Audio | Amazon, Other | want to listen, listening, listened |
+| Video | YouTube, Netflix, Other | want to watch, watching, watched |
+| Guidebook | Physical, GunksApp, Other | want to read, reading, finished |
 
-**Action:** Choose **Ask Learning Concierge** again. Enter:
+### 3. Browse videos and show Free Solo
+
+**Action:** Choose **Browse Video Library**. Point out Free Solo in the video-only list, then return.
+
+**Narration:**
+
+> The Video Library filters out books and guidebooks. Free Solo is now visible here with the other saved YouTube and Netflix content.
+
+**Shows:** Video filter, distinct menu option, and the item added in the previous step.
+
+### 4. Search across the library
+
+**Action:** Choose **Search Library**, enter `career`, show the results (including the PM-career/interview material), then return.
+
+**Narration:**
+
+> Search looks across the saved library—not just one format—so I can find career material whether it is a book, audiobook, guide, or video.
+
+**Shows:** Search input, search component, and display of matching records.
+
+### 5. Ask for a recommendation from saved items
+
+**Action:** Choose **Ask Learning Concierge** and enter:
 
 ```text
-I have about 25 minutes and want a low-energy climbing video.
+I need PM career advice.
 ```
 
-**Narration:**
-
-> This time I do not have a saved climbing video, so the Discovery Agent adds adjacent topics—physiology and mental health—rather than simply finding another climbing video. It returns a short stretch recommendation from my curated discovery catalog and explains the connection.
-
-> The three agents’ outputs are combined and passed through a refinement pipeline. Refinement removes duplicates, completed items, and anything already in my library, leaving only genuinely new content in this “Explore something new” section.
-
-**What this proves:** Video-content support, discovery behavior, a meaningful Bash pipe, refinement, clean final shortlist.
-
-## Scene 5 — Import a book from a photo (1:35-2:00)
-
-**Action:** Choose **Import Book from Photo (Bonus)**. Drag the prepared image into the prompt. Let Codex show the complete detected-book list, confirm one batch import, select shared metadata once, and save the books.
+Wait for the live agents to finish. Show the “Start from your library” lane, then return.
 
 **Narration:**
 
-> I can also add several physical books from one photo. I drag the image into the terminal, and Codex vision tells me how many books it found and lists every legible title, creator, and topic. I confirm one batch import, then save them with shared metadata.
+> I ask in plain language, without filling out a second form. Three live Codex agents run in parallel: one uses my completed history, one finds matches in my saved library, and one explores adjacent topics. They make the first relevance judgment. Here the saved list contains PM-career and interview resources, so those come first. Notice that the app does not assume an energy level, format, or time limit that I never mentioned.
 
-**What this proves:** Optional Codex vision feature, image-drop input, human confirmation, metadata workflow, write through the data layer.
+**Shows:** Natural-language request, live model decisions, parallel agents/progress, saved-library matching, no repeated constraint selections, and candidate explanations.
 
-## Scene 6 — Architecture close (2:00-2:10)
+### 6. Import one or more books from a dropped image (bonus)
 
-**Action:** Return to the main menu, or briefly show the project folder tree in a second terminal if desired.
+**Action:** Choose **Import Book from Photo (Bonus)**. Drag the prepared image directly into the terminal prompt and press Enter. Review the complete candidate list. Choose **Cancel** if a title/author is wrong; otherwise choose **Import all detected books**, select the shared status/reason/energy, and show the import/duplicate-skip messages. Return to the menu.
 
 **Narration:**
 
-> The architecture is intentionally small and visible: UI to workflows to recommendation and book components to the data layer and CSV storage. Each Bash file has one clear responsibility, and the recommendation workflow demonstrates small programs, parallelization, streaming, and composition.
+> I can also drop in one photo containing multiple book covers or spines. The path is normalized even when Terminal escapes characters in it. Codex vision identifies each legible book, and I review the whole list before confirming a batch import. HEIC photos are converted locally for analysis. Existing titles are skipped instead of duplicated.
 
-## Recording checklist
+**Shows:** Drag-and-drop path parsing, multiple books per image, Codex vision, human confirmation/cancel, shared metadata, duplicate protection, and writes through the data layer. Never confirm an incorrect title just to advance the demo.
 
-- [ ] Gum menu is visible; do not use the plain-shell fallback in the recording.
-- [ ] Show Scenes 1-6.
-- [ ] Keep the terminal text readable and narration concise.
-- [ ] Do not show installation, debugging, passwords, or paths containing personal information.
-- [ ] Save the video in the repository or upload it elsewhere and add a clearly visible link to `README.md`.
+### 7. Quit and close on the architecture
+
+**Action:** Return to the menu, choose **Quit**, and finish on the terminal.
+
+**Narration:**
+
+> The flow stays small and inspectable: Gum handles the interface, Bash workflows coordinate components, the database script owns CSV access, and the live recommendation agents make the subjective matches. The test suite checks core behavior without calling the live model or changing my library.
+
+**Shows:** Clean exit and a concise architecture summary.
+
+## Coverage checklist
+
+- [ ] Launch animation and persistent main-menu book banner
+- [ ] Browse Learning Library
+- [ ] Browse Video Library
+- [ ] Add an item and show its metadata/provider choices
+- [ ] Search saved content
+- [ ] Concierge saved-library recommendation
+- [ ] Add Free Solo as a video, then show it in Browse Video Library
+- [ ] Import from a drag-dropped image, including multi-book review and cancel/confirm
+- [ ] Return to menu between flows and Quit
+- [ ] No test entries left in the actual project data; no inaccurate photo detections imported

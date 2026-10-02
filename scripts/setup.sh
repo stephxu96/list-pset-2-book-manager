@@ -46,9 +46,9 @@ if ! command -v gum >/dev/null 2>&1; then
   exit 1
 fi
 
-command -v codex >/dev/null 2>&1 || { printf 'Codex CLI is required for the photo-import bonus.\n' >&2; exit 1; }
-command -v jq >/dev/null 2>&1 || { printf 'jq is required for the photo-import bonus.\n' >&2; exit 1; }
-printf 'Codex vision import is available through the local Codex CLI.\n'
+command -v codex >/dev/null 2>&1 || { printf 'Codex CLI is required for live recommendations and photo import. Install and sign in before running the app.\n' >&2; exit 1; }
+command -v jq >/dev/null 2>&1 || { printf 'jq is required for live recommendations and photo import.\n' >&2; exit 1; }
+printf 'Live recommendation agents and Codex vision import are available through the local Codex CLI.\n'
 
 for script in "$ROOT_DIR"/app.sh "$ROOT_DIR"/ui/*.sh "$ROOT_DIR"/workflows/*.sh "$ROOT_DIR"/books/*.sh "$ROOT_DIR"/recommendations/*.sh "$ROOT_DIR"/data/book_database.sh; do
   bash -n "$script"

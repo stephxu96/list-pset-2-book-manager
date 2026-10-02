@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Learning Library is a small Bash and Gum terminal application that helps its owner decide what to read, listen to, or watch next. It searches the personal library first and uses a curated discovery catalog only when no strong saved match exists.
+Learning Library is a small Bash and Gum terminal application that helps its owner decide what to read, listen to, or watch next. It prioritizes saved-library matches in the display and offers adjacent-topic suggestions from a curated discovery catalog in a separate lane. Both are evaluated concurrently.
 
 ## Content model
 
@@ -22,11 +22,11 @@ Topics are AI/ML, entrepreneurship, operations/processes, mental health, career,
 Gum UI -> workflows -> book/recommendation components -> data layer -> CSV storage
 ```
 
-`data/book_database.sh` is the only script permitted to access `data/books.csv`. All other scripts use its command interface.
+`data/book_database.sh` is the only runtime component permitted to access `data/books.csv`. Application callers use its command interface; setup and test scripts also inspect the CSV for validation.
 
 ## Learning Concierge
 
-The Concierge collects a free-text question, energy level, preferred format, and optional available minutes. A saved item is a strong match if it satisfies at least two applicable conditions: topic, content format, energy, duration, or learning goal. Saved matches are displayed first; otherwise the discovery catalog is searched. The main menu also exposes a dedicated Video Library view for saved YouTube and Netflix records.
+The Concierge collects a single free-text question. The live agents interpret any stated energy, format, duration, goal, or topic constraints and do not require repetitive follow-up selections. Saved matches are displayed first; adjacent-topic discoveries are drawn from the discovery catalog. The main menu also exposes a dedicated Video Library view for saved YouTube and Netflix records.
 
 ## Bonus: photo import
 
@@ -34,22 +34,22 @@ The Concierge collects a free-text question, energy level, preferred format, and
 
 ## Recommendation workflow
 
-`workflows/get_recommendations.sh` launches the history, interests, and discovery agents concurrently using `&`, stores their process IDs with `$!`, displays progress, and synchronizes with `wait`. Their combined candidates pass through:
+`workflows/get_recommendations.sh` sends the natural-language prompt and library/catalog context to three independent live Codex CLI agents (history, interests, adjacent-topic discovery), launches them concurrently using `&`, stores their process IDs with `$!`, displays progress, and synchronizes with `wait`. The model makes first-stab relevance and constraint decisions; the application does not infer energy, format, or time with hard-coded keyword rules. Every model-selected ID is validated against the supplied catalog before display. Their combined candidates pass through:
 
 ```text
 cat agent-results | recommendations/refine_recommendations.sh
 ```
 
-The required refinement component removes duplicates, completed content, and every item already present in the personal library; it limits the new-content shortlist to five items. Saved-library matches are displayed separately as the Concierge's “Start from your library” lane. It does not make subjective ranking decisions.
+The required refinement component removes duplicates, completed content, and every item already present in the personal library; it polishes explanation whitespace and limits the new-content shortlist to five items. It preserves agent order rather than implementing a separate relevance-ranking model. Saved-library matches are displayed separately as the Concierge's “Start from your library” lane. Subjective matching and the adjacent-topic choices are made by the live agents, not deterministic keyword scoring.
 
 ## Scope
 
-Version 1 is intentionally offline and deterministic: simple keyword matching plus a curated catalog. Live web research, provider scraping, graphical chat, user accounts, and cloud sync are out of scope.
+Version 1 stores the library locally, but recommendations and photo analysis require a signed-in Codex CLI and network access. Discovery uses live model selection from a curated catalog, not open-web research. Provider scraping, graphical chat, user accounts, and cloud sync are out of scope. Manual-entry metadata enrichment is basic provider/format normalization; it does not look up publication details online. HEIC conversion requires macOS `sips`; other systems can use PNG or JPEG.
 
 ## Success criteria
 
 - The user can add, browse, and search mixed content.
 - The Concierge recommends a suitable saved item when one exists.
-- The app falls back to a discovery item when none exists.
+- The app offers adjacent-topic discovery alongside saved matches, or on its own when no saved match is selected.
 - All three recommendation programs run concurrently with visible progress.
 - The code remains small enough to explain file by file.

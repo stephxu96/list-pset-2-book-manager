@@ -43,6 +43,12 @@ case "${1:-}" in
       printf 'An item with id %s already exists.\n' "$id" >&2
       exit 1
     fi
+    # Some editors leave the CSV without a final newline. Separate the next
+    # record first so it cannot be glued onto the last existing row.
+    if [[ -s "$BOOKS_FILE" ]]; then
+      last_byte="$(tail -c 1 "$BOOKS_FILE")"
+      [[ -z "$last_byte" ]] || printf '\n' >> "$BOOKS_FILE"
+    fi
     printf '%s\n' "$record" >> "$BOOKS_FILE"
     ;;
   update-status)

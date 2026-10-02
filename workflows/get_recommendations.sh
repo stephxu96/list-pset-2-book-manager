@@ -9,28 +9,37 @@ HISTORY="$ROOT_DIR/recommendations/recommend_from_history.sh"
 INTERESTS="$ROOT_DIR/recommendations/recommend_from_interests.sh"
 DISCOVERY="$ROOT_DIR/recommendations/recommend_for_discovery.sh"
 REFINE="$ROOT_DIR/recommendations/refine_recommendations.sh"
-PARSE_REQUEST="$ROOT_DIR/recommendations/parse_request.sh"
 
 query="$("$SCREEN" collect-context)"
-IFS='|' read -r energy format minutes <<< "$("$PARSE_REQUEST" --query "$query")"
+command -v jq >/dev/null 2>&1 || { printf 'jq is required for live recommendations.\n' >&2; exit 1; }
 
-printf 'I heard: %s energy' "$energy"
-[[ "$format" != "any" ]] && printf ' · %s' "$format"
-[[ -n "$minutes" ]] && printf ' · %s minutes' "$minutes"
-printf '\n'
+records_to_json() {
+  printf '%s\n' "$1" | jq -Rn '[inputs | split(",") | {
+    id: .[0], title: .[1], creator: .[2], content_type: .[3],
+    provider: .[4], provider_format: .[5], topic: .[6], location: .[7],
+    discipline: .[8], duration: .[9], energy: .[10], status: .[11],
+    reason_saved: .[12], link: .[13], raw: join(",")
+  }]'
+}
 
 work_dir="$(mktemp -d "${TMPDIR:-/tmp}/learning-library.XXXXXX")"
 cleanup() { rm -rf "$work_dir"; }
 trap cleanup EXIT
 
-"$HISTORY" --query "$query" --energy "$energy" --format "$format" --minutes "$minutes" > "$work_dir/history" &
+library_json="$(records_to_json "$("$ROOT_DIR/data/book_database.sh" list)")"
+discovery_json="$(records_to_json "$("$ROOT_DIR/data/book_database.sh" discovery-list)")"
+jq -n --arg request "$query" --argjson library "$library_json" \
+  --argjson discovery_catalog "$discovery_json" \
+  '{request: $request, library: $library, discovery_catalog: $discovery_catalog}' > "$work_dir/context.json"
+
+"$HISTORY" < "$work_dir/context.json" > "$work_dir/history" &
 history_pid=$!
-"$INTERESTS" --query "$query" --energy "$energy" --format "$format" --minutes "$minutes" > "$work_dir/interests" &
+"$INTERESTS" < "$work_dir/context.json" > "$work_dir/interests" &
 interests_pid=$!
-"$DISCOVERY" --query "$query" --energy "$energy" --format "$format" --minutes "$minutes" > "$work_dir/discovery" &
+"$DISCOVERY" < "$work_dir/context.json" > "$work_dir/discovery" &
 discovery_pid=$!
 
-printf 'Recommendation agents running'
+printf 'Live recommendation agents are considering your request'
 while kill -0 "$history_pid" 2>/dev/null || kill -0 "$interests_pid" 2>/dev/null || kill -0 "$discovery_pid" 2>/dev/null; do
   printf '.'
   sleep 0.3
