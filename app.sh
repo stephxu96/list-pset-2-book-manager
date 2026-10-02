@@ -5,6 +5,8 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+"$ROOT_DIR/ui/launch_animation.sh"
+
 while true; do
   choice="$("$ROOT_DIR/ui/main_menu.sh")"
   case "$choice" in

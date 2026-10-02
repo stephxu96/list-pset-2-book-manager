@@ -1,13 +1,12 @@
 # Learning Library Demo Script
 
-Use this as a 2-3 minute narrated screen recording. It demonstrates the required Book Manager behaviors first, then the optional features. Do not record setup, failed OCR, or menu fallback messages.
+Use this as a 2-3 minute narrated screen recording. It demonstrates the required Book Manager behaviors. Do not record setup or menu fallback messages.
 
 ## Before recording
 
-1. Run `./scripts/setup.sh --install` once. Confirm that Gum and the locally authenticated Codex CLI are available.
+1. Run `./scripts/setup.sh --install` once. Confirm that Gum is available.
 2. Use a large terminal window with readable text.
-3. Have one clear, front-facing photo of a book cover ready to drag into the terminal. Choose a book that is not already in the library.
-4. Run `./app.sh`. Start the screen recording only when the Gum menu is visible.
+3. Run `./app.sh`. Start the screen recording when the flip-book welcome animation appears.
 
 ## Scene 1 — Introduction and browse (0:00-0:20)
 
@@ -67,17 +66,7 @@ Minutes: 20
 
 **What this proves:** Video-content support, discovery behavior, a meaningful Bash pipe, refinement, clean final shortlist.
 
-## Scene 5 — Bonus: import a book from a photo (1:30-2:00)
-
-**Action:** Choose **Import Book from Photo (Bonus)**. Drag the prepared cover image into the input. Confirm or correct the OCR title and author, then select topic, status, reason, and energy.
-
-**Narration:**
-
-> My bonus feature is photo import. I can drag a photo of a book cover into the terminal. Codex vision proposes a title, creator, and topic, but I confirm the result before it is saved. That keeps a human in control while making it much faster to capture books from class.
-
-**What this proves:** Optional OCR feature, user confirmation, metadata workflow, write through the data layer.
-
-## Scene 6 — Architecture close (2:00-2:15)
+## Scene 5 — Architecture close (1:30-1:45)
 
 **Action:** Return to the main menu, or briefly show the project folder tree in a second terminal if desired.
 
@@ -88,7 +77,7 @@ Minutes: 20
 ## Recording checklist
 
 - [ ] Gum menu is visible; do not use the plain-shell fallback in the recording.
-- [ ] Show Scenes 1-4 at minimum; Scenes 5 and 6 make the demo stronger.
+- [ ] Show Scenes 1-5.
 - [ ] Keep the terminal text readable and narration concise.
-- [ ] Do not show installation, debugging, passwords, paths containing personal information, or failed OCR.
+- [ ] Do not show installation, debugging, passwords, or paths containing personal information.
 - [ ] Save the video in the repository or upload it elsewhere and add a clearly visible link to `README.md`.
