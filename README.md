@@ -24,7 +24,7 @@ This library reflects a learning life that combines AI/ML, entrepreneurship, ope
 
 ## Bonus: import a book from a photo
 
-Choose **Import Book from Photo (Bonus)**, then drag a clear book-cover image into the prompted terminal field. Tesseract OCR proposes a title and creator; you always confirm or correct those values before the item is saved as a physical text record. This keeps OCR useful without trusting imperfect cover recognition blindly.
+Choose **Import Book from Photo (Bonus)**, then drag a clear book-cover image into the prompted terminal field. PNG, JPEG, and iPhone HEIC images are supported; HEIC is converted locally to a temporary PNG before OCR. Tesseract OCR proposes a title and creator; you always confirm or correct those values before the item is saved as a physical text record. This keeps OCR useful without trusting imperfect cover recognition blindly.
 
 See [TECHNICAL_SPEC.md](TECHNICAL_SPEC.md) for the complete implementation specification.
 
