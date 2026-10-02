@@ -27,3 +27,7 @@ This library reflects a learning life that combines AI/ML, entrepreneurship, ope
 Choose **Import Book from Photo (Bonus)**, then drag a clear book-cover image into the prompted terminal field. Tesseract OCR proposes a title and creator; you always confirm or correct those values before the item is saved as a physical text record. This keeps OCR useful without trusting imperfect cover recognition blindly.
 
 See [TECHNICAL_SPEC.md](TECHNICAL_SPEC.md) for the complete implementation specification.
+
+## Demo
+
+Use [DEMO_SCRIPT.md](DEMO_SCRIPT.md) to record the short narrated terminal demo required for submission. Add the finished video to this repository or replace this paragraph with a clearly visible link before submitting.
