@@ -27,8 +27,10 @@ frames=(
 )
 
 printf '\033[?25l'
-for frame in "${frames[@]}"; do
-  printf '\033[2J\033[H\n%s\n\n       opening your next chapter...\n' "$frame"
-  sleep 0.16
+for _ in 1 2; do
+  for frame in "${frames[@]}"; do
+    printf '\033[2J\033[H\n%s\n\n       opening your next chapter...\n' "$frame"
+    sleep 0.20
+  done
 done
 printf '\033[2J\033[H\033[?25h'

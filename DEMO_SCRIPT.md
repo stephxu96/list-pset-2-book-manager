@@ -6,7 +6,7 @@ Use this as a 2-3 minute narrated screen recording. It demonstrates the required
 
 1. Run `./scripts/setup.sh --install` once. Confirm that Gum is available.
 2. Use a large terminal window with readable text.
-3. Run `./app.sh`. Start the screen recording when the flip-book welcome animation appears.
+3. Run `./app.sh`. Start the screen recording when the flip-book welcome animation appears; the open-book mark remains visible above the main-menu choices.
 
 ## Scene 1 — Introduction and browse (0:00-0:20)
 
