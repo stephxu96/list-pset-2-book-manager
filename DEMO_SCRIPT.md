@@ -6,7 +6,8 @@ Use this as a 2-3 minute narrated screen recording. It demonstrates the required
 
 1. Run `./scripts/setup.sh --install` once. Confirm that Gum is available.
 2. Use a large terminal window with readable text.
-3. Run `./app.sh`. Start the screen recording when the flip-book welcome animation appears; the open-book mark remains visible above the main-menu choices.
+3. Have a clear, front-facing cover photo for a title not already in the library ready to drag into the terminal.
+4. Run `./app.sh`. Start the screen recording when the flip-book welcome animation appears; the open-book mark remains visible above the main-menu choices.
 
 ## Scene 1 — Introduction and browse (0:00-0:20)
 
@@ -28,7 +29,17 @@ Use this as a 2-3 minute narrated screen recording. It demonstrates the required
 
 **What this proves:** Search workflow, Book component, data-layer boundary.
 
-## Scene 3 — Saved-first Concierge recommendation (0:35-1:05)
+## Scene 3 — Import a book from a photo (0:35-0:55)
+
+**Action:** Choose **Import Book from Photo (Bonus)**. Drag the prepared cover image into the prompt, then accept or correct Codex’s title and creator suggestions. Select the remaining metadata and save it.
+
+**Narration:**
+
+> I can also add a physical book from a cover photo. I drag the image into the terminal, and Codex vision proposes the title, creator, and topic. I confirm or correct those details before the item is saved, so the AI speeds up entry without taking control away from me.
+
+**What this proves:** Optional Codex vision feature, image-drop input, human confirmation, metadata workflow, write through the data layer.
+
+## Scene 4 — Saved-first Concierge recommendation (0:55-1:25)
 
 **Action:** Choose **Ask Learning Concierge**. Enter:
 
@@ -44,7 +55,7 @@ I need PM career advice in a medium-energy book.
 
 **What this proves:** Natural-language input, personalization, parallelization, `$!`, `wait`, streaming/progress, saved-first matching.
 
-## Scene 4 — New video discovery (1:05-1:30)
+## Scene 5 — New video discovery (1:25-1:55)
 
 **Action:** Choose **Ask Learning Concierge** again. Enter:
 
@@ -60,7 +71,7 @@ I have about 25 minutes and want a low-energy climbing video.
 
 **What this proves:** Video-content support, discovery behavior, a meaningful Bash pipe, refinement, clean final shortlist.
 
-## Scene 5 — Architecture close (1:30-1:45)
+## Scene 6 — Architecture close (1:55-2:10)
 
 **Action:** Return to the main menu, or briefly show the project folder tree in a second terminal if desired.
 
@@ -71,7 +82,8 @@ I have about 25 minutes and want a low-energy climbing video.
 ## Recording checklist
 
 - [ ] Gum menu is visible; do not use the plain-shell fallback in the recording.
-- [ ] Show Scenes 1-5.
+- [ ] Show Scenes 1-6.
+- [ ] Use an unowned title for the photo import.
 - [ ] Keep the terminal text readable and narration concise.
 - [ ] Do not show installation, debugging, passwords, or paths containing personal information.
 - [ ] Save the video in the repository or upload it elsewhere and add a clearly visible link to `README.md`.
