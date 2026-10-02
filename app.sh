@@ -17,6 +17,9 @@ while true; do
     "Add Book, Audio, Video, or Guidebook")
       "$ROOT_DIR/workflows/manage_library.sh" add
       ;;
+    "Import Book from Photo (Bonus)")
+      "$ROOT_DIR/workflows/manage_library.sh" import-photo
+      ;;
     "Search Library")
       "$ROOT_DIR/workflows/manage_library.sh" search
       ;;

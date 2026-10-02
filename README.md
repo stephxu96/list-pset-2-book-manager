@@ -12,7 +12,7 @@ From the project folder, validate dependencies first. Add `--install` to install
 ./app.sh
 ```
 
-Gum is the required, intended interface. The application has a basic shell-menu fallback only so developers can diagnose the project before installing dependencies.
+Gum is the required, intended interface. The application has a basic shell-menu fallback only so developers can diagnose the project before installing dependencies. The optional photo-import bonus requires Tesseract OCR: `./scripts/setup.sh --install-ocr`.
 
 ## Architecture
 
@@ -21,5 +21,9 @@ The app follows a visible UI -> workflow -> component -> data-layer -> storage s
 ## Personalization
 
 This library reflects a learning life that combines AI/ML, entrepreneurship, operations, mental health, career development, climbing, physical therapy, and economics. It treats Amazon as a provider with Kindle and Audible subformats, and supports physical guidebooks and Gunks App references alongside YouTube and Netflix video. The Learning Concierge presents matching saved items under “Start from your library,” then uses a small curated discovery catalog for an “Explore something new” shortlist. The required refinement step removes duplicate, completed, and already-saved items from that new-content shortlist.
+
+## Bonus: import a book from a photo
+
+Choose **Import Book from Photo (Bonus)**, then drag a clear book-cover image into the prompted terminal field. Tesseract OCR proposes a title and creator; you always confirm or correct those values before the item is saved as a physical text record. This keeps OCR useful without trusting imperfect cover recognition blindly.
 
 See [TECHNICAL_SPEC.md](TECHNICAL_SPEC.md) for the complete implementation specification.

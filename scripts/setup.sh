@@ -4,19 +4,23 @@
 set -euo pipefail
 
 install_gum=false
-case "${1:-}" in
-  "") ;;
-  --install) install_gum=true ;;
-  -h|--help)
-    printf 'Usage: %s [--install]\n' "$0"
-    printf '  --install  Install Gum using Homebrew or apt-get.\n'
-    exit 0
-    ;;
-  *)
-    printf 'Unknown option: %s\n' "$1" >&2
-    exit 1
-    ;;
-esac
+install_ocr=false
+for option in "$@"; do
+  case "$option" in
+    --install) install_gum=true ;;
+    --install-ocr) install_ocr=true ;;
+    -h|--help)
+      printf 'Usage: %s [--install] [--install-ocr]\n' "$0"
+      printf '  --install      Install Gum using Homebrew or apt-get.\n'
+      printf '  --install-ocr  Install optional Tesseract OCR for photo imports.\n'
+      exit 0
+      ;;
+    *)
+      printf 'Unknown option: %s\n' "$option" >&2
+      exit 1
+      ;;
+  esac
+done
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
@@ -43,6 +47,20 @@ fi
 if ! command -v gum >/dev/null 2>&1; then
   printf 'Gum installation did not complete.\n' >&2
   exit 1
+fi
+
+if command -v tesseract >/dev/null 2>&1; then
+  printf 'Optional OCR found: %s\n' "$(tesseract --version | head -n 1)"
+elif [[ "$install_ocr" == true && "$(command -v brew || true)" != "" ]]; then
+  printf 'Installing optional Tesseract OCR with Homebrew...\n'
+  brew install tesseract
+elif [[ "$install_ocr" == true && "$(command -v apt-get || true)" != "" ]]; then
+  printf 'Installing optional Tesseract OCR with apt-get...\n'
+  sudo apt-get update
+  sudo apt-get install -y tesseract-ocr
+else
+  printf 'Optional OCR unavailable: photo import requires Tesseract.\n'
+  printf 'Install it later with: ./scripts/setup.sh --install-ocr\n'
 fi
 
 for script in "$ROOT_DIR"/app.sh "$ROOT_DIR"/ui/*.sh "$ROOT_DIR"/workflows/*.sh "$ROOT_DIR"/books/*.sh "$ROOT_DIR"/recommendations/*.sh "$ROOT_DIR"/data/book_database.sh; do

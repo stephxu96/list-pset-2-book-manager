@@ -7,6 +7,7 @@ options=(
   "Browse Learning Library"
   "Browse Video Library"
   "Add Book, Audio, Video, or Guidebook"
+  "Import Book from Photo (Bonus)"
   "Search Library"
   "Ask Learning Concierge"
   "Get Recommendations"

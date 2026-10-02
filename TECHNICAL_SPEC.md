@@ -28,6 +28,10 @@ Gum UI -> workflows -> book/recommendation components -> data layer -> CSV stora
 
 The Concierge collects a free-text question, energy level, preferred format, and optional available minutes. A saved item is a strong match if it satisfies at least two applicable conditions: topic, content format, energy, duration, or learning goal. Saved matches are displayed first; otherwise the discovery catalog is searched. The main menu also exposes a dedicated Video Library view for saved YouTube and Netflix records.
 
+## Bonus: photo import
+
+`books/import_book_photo.sh` is an optional Bash OCR component powered by Tesseract. The user drags a cover photo into the terminal, the component returns probable title and creator text, and the workflow requires human confirmation before adding the book through `book_database.sh`. Tesseract is optional and installed with `./scripts/setup.sh --install-ocr`.
+
 ## Recommendation workflow
 
 `workflows/get_recommendations.sh` launches the history, interests, and discovery agents concurrently using `&`, stores their process IDs with `$!`, displays progress, and synchronizes with `wait`. Their combined candidates pass through:
