@@ -31,8 +31,8 @@ case "$mode" in
     printf '\nYour Video Library\n'
     show_records "$("$DB" list | awk -F',' '$4 == "video"')"
     ;;
-  search)
-    show_records "$("$DB" search "${2:-}")"
+  records)
+    show_records "${2:-}"
     ;;
   *)
     printf 'Unknown library display mode: %s\n' "$mode" >&2

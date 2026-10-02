@@ -7,6 +7,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 LIBRARY_UI="$ROOT_DIR/ui/library_screen.sh"
 DB="$ROOT_DIR/data/book_database.sh"
 METADATA="$ROOT_DIR/books/fetch_book_metadata.sh"
+SEARCH="$ROOT_DIR/books/search_books.sh"
 PHOTO_IMPORT="$ROOT_DIR/books/import_book_photo.sh"
 
 ask() {
@@ -74,7 +75,8 @@ case "${1:-}" in
     ;;
   search)
     term="$(ask 'Search your library:' 'AI, climbing, Audible, strategy...')"
-    "$LIBRARY_UI" search "$term"
+    results="$("$SEARCH" "$term")"
+    "$LIBRARY_UI" records "$results"
     ;;
   add)
     title="$(ask 'Title:' 'Required')"
