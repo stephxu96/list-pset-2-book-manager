@@ -27,6 +27,9 @@ show_book_banner() {
   printf '        ✦ your next chapter awaits ✦\n\n' >&2
 }
 
+if [[ -t 2 ]]; then
+  printf '\033[2J\033[H' >&2
+fi
 show_book_banner
 
 if command -v gum >/dev/null 2>&1; then
