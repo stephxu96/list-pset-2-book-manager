@@ -75,13 +75,13 @@ case "${1:-}" in
   import-photo)
     photo_path="$(ask 'Drag a clear book-cover photo here:' '/path/to/photo.jpg')"
     candidate="$("$PHOTO_IMPORT" "$photo_path")"
-    IFS='|' read -r guessed_title guessed_creator <<< "$candidate"
-    printf 'OCR found a possible title and creator. Please confirm or correct both fields.\n'
+    IFS='|' read -r guessed_title guessed_creator guessed_topic <<< "$candidate"
+    printf 'Codex found a possible title, creator, and topic. Please confirm or correct the details.\n'
     title="$(ask_with_default 'Title:' "$guessed_title")"
     creator="$(ask_with_default 'Creator:' "$guessed_creator")"
     content_type="text"
     provider="Physical"
-    topic="$(choose 'Topic' ai_ml entrepreneurship operations_processes mental_health career climbing physiology_health economics fiction other)"
+    topic="$(choose "Topic (Codex suggested: $guessed_topic)" "$guessed_topic" ai_ml entrepreneurship operations_processes mental_health career climbing physiology_health economics fiction other)"
     status="$(choose 'Current status' want_to_read reading finished)"
     reason="$(choose 'Why save it?' class recommendation news curiosity career health_exercise)"
     energy="$(choose 'Energy level' low medium high)"

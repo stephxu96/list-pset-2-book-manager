@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "properties": {
+    "title": { "type": "string" },
+    "creator": { "type": "string" },
+    "topic": {
+      "type": "string",
+      "enum": ["ai_ml", "entrepreneurship", "operations_processes", "mental_health", "career", "climbing", "physiology_health", "economics", "fiction", "other"]
+    }
+  },
+  "required": ["title", "creator", "topic"],
+  "additionalProperties": false
+}

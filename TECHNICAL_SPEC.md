@@ -30,7 +30,7 @@ The Concierge collects a free-text question, energy level, preferred format, and
 
 ## Bonus: photo import
 
-`books/import_book_photo.sh` is an optional Bash OCR component powered by Tesseract. The user drags a cover photo into the terminal, the component returns probable title and creator text, and the workflow requires human confirmation before adding the book through `book_database.sh`. PNG, JPEG, and HEIC inputs are supported; HEIC is converted locally to a temporary PNG before OCR. Tesseract is optional and installed with `./scripts/setup.sh --install-ocr`.
+`books/import_book_photo.sh` is an optional Codex-vision component launched from Bash. The user drags a cover photo into the terminal, Codex returns structured title, creator, and topic candidates, and the workflow requires human confirmation before adding the book through `book_database.sh`. PNG, JPEG, and HEIC inputs are supported; HEIC is converted locally to a temporary PNG before analysis. The selected image is sent to Codex for analysis.
 
 ## Recommendation workflow
 

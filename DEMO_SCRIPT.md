@@ -4,7 +4,7 @@ Use this as a 2-3 minute narrated screen recording. It demonstrates the required
 
 ## Before recording
 
-1. Run `./scripts/setup.sh --install --install-ocr` once. Confirm that both Gum and Tesseract are installed.
+1. Run `./scripts/setup.sh --install` once. Confirm that Gum and the locally authenticated Codex CLI are available.
 2. Use a large terminal window with readable text.
 3. Have one clear, front-facing photo of a book cover ready to drag into the terminal. Choose a book that is not already in the library.
 4. Run `./app.sh`. Start the screen recording only when the Gum menu is visible.
@@ -73,7 +73,7 @@ Minutes: 20
 
 **Narration:**
 
-> My bonus feature is photo import. I can drag a photo of a book cover into the terminal. Tesseract OCR proposes a title and creator, but I confirm the result before it is saved. That preserves human judgment when OCR is imperfect while making it much faster to capture books from class.
+> My bonus feature is photo import. I can drag a photo of a book cover into the terminal. Codex vision proposes a title, creator, and topic, but I confirm the result before it is saved. That keeps a human in control while making it much faster to capture books from class.
 
 **What this proves:** Optional OCR feature, user confirmation, metadata workflow, write through the data layer.
 

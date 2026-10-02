@@ -1,38 +1,45 @@
 #!/usr/bin/env bash
-# Optional OCR component. Prints title|creator candidates for a book-cover image.
+# Optional Codex-vision component. Prints title|creator|topic from a cover image.
 
 set -euo pipefail
 
 [[ $# -eq 1 ]] || { printf 'Usage: %s /path/to/book-photo.jpg\n' "$0" >&2; exit 1; }
 
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+SCHEMA="$ROOT_DIR/books/book_metadata_schema.json"
 photo_path="$(printf '%s' "$1" | sed -e 's/^file:\/\///' -e 's/^"//' -e 's/"$//' -e 's/\\ / /g')"
 [[ -f "$photo_path" ]] || { printf 'Photo not found: %s\n' "$photo_path" >&2; exit 1; }
+command -v codex >/dev/null 2>&1 || { printf 'Codex CLI is required for photo import. Install and sign in to Codex first.\n' >&2; exit 1; }
+command -v jq >/dev/null 2>&1 || { printf 'jq is required to read Codex metadata output.\n' >&2; exit 1; }
 
-if ! command -v tesseract >/dev/null 2>&1; then
-  printf 'OCR requires Tesseract. Run ./scripts/setup.sh --install-ocr first.\n' >&2
-  exit 1
-fi
-
-ocr_input="$photo_path"
+codex_image="$photo_path"
 temp_dir=""
 cleanup() { [[ -n "$temp_dir" ]] && rm -rf "$temp_dir"; }
 trap cleanup EXIT
 
-# Tesseract handles PNG/JPEG reliably but not HEIC on every platform. macOS
-# supplies sips, so convert an iPhone HEIC photo to a temporary PNG first.
+# Codex vision accepts common web formats. Convert an iPhone HEIC locally first.
 extension="$(printf '%s' "${photo_path##*.}" | tr '[:upper:]' '[:lower:]')"
 if [[ "$extension" == "heic" || "$extension" == "heif" ]]; then
   command -v sips >/dev/null 2>&1 || { printf 'HEIC import requires macOS sips or a PNG/JPEG conversion.\n' >&2; exit 1; }
-  temp_dir="$(mktemp -d "${TMPDIR:-/tmp}/learning-library-ocr.XXXXXX")"
-  ocr_input="$temp_dir/cover.png"
-  sips -s format png "$photo_path" --out "$ocr_input" >/dev/null
+  temp_dir="$(mktemp -d "${TMPDIR:-/tmp}/learning-library-codex.XXXXXX")"
+  codex_image="$temp_dir/cover.png"
+  sips -s format png "$photo_path" --out "$codex_image" >/dev/null
 fi
 
-ocr_text="$(tesseract "$ocr_input" stdout 2>/dev/null || true)"
-[[ -n "$ocr_text" ]] || { printf 'No readable text found in that photo. Try a clearer, front-facing cover image.\n' >&2; exit 1; }
+result_file="$(mktemp "${TMPDIR:-/tmp}/learning-library-codex-result.XXXXXX")"
+log_file="$(mktemp "${TMPDIR:-/tmp}/learning-library-codex-log.XXXXXX")"
+trap 'rm -f "$result_file" "$log_file"; cleanup' EXIT
 
-# A cover's largest/first readable text is usually the title. Confirmation in
-# the workflow is mandatory because OCR cannot reliably separate title/author.
-title="$(printf '%s\n' "$ocr_text" | awk 'length($0) > 3 { print; exit }' | tr '|,' '  ')"
-creator="$(printf '%s\n' "$ocr_text" | awk 'length($0) > 3 { count++; if (count == 2) { print; exit } }' | tr '|,' '  ')"
-printf '%s|%s\n' "$title" "$creator"
+if ! codex exec --ephemeral --sandbox read-only -C "$ROOT_DIR" \
+  --image "$codex_image" \
+  --output-schema "$SCHEMA" \
+  --output-last-message "$result_file" \
+  'Identify the book shown on this cover. Return only the schema fields. Use the clearest visible title and author. Choose the single best matching topic. If a field is not readable, return "unknown" for it.' </dev/null >/dev/null 2>"$log_file"; then
+  printf 'Codex could not identify that cover. Try a clearer, front-facing image.\n' >&2
+  exit 1
+fi
+
+title="$(jq -r '.title // "unknown"' "$result_file" | tr '|,' '  ')"
+creator="$(jq -r '.creator // "unknown"' "$result_file" | tr '|,' '  ')"
+topic="$(jq -r '.topic // "other"' "$result_file")"
+printf '%s|%s|%s\n' "$title" "$creator" "$topic"

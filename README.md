@@ -12,7 +12,7 @@ From the project folder, validate dependencies first. Add `--install` to install
 ./app.sh
 ```
 
-Gum is the required, intended interface. The application has a basic shell-menu fallback only so developers can diagnose the project before installing dependencies. The optional photo-import bonus requires Tesseract OCR: `./scripts/setup.sh --install-ocr`.
+Gum is the required, intended interface. The application has a basic shell-menu fallback only so developers can diagnose the project before installing dependencies. The optional photo-import bonus uses the locally authenticated Codex CLI and `jq`; it sends the selected cover image to Codex vision for analysis.
 
 ## Architecture
 
@@ -24,7 +24,7 @@ This library reflects a learning life that combines AI/ML, entrepreneurship, ope
 
 ## Bonus: import a book from a photo
 
-Choose **Import Book from Photo (Bonus)**, then drag a clear book-cover image into the prompted terminal field. PNG, JPEG, and iPhone HEIC images are supported; HEIC is converted locally to a temporary PNG before OCR. Tesseract OCR proposes a title and creator; you always confirm or correct those values before the item is saved as a physical text record. This keeps OCR useful without trusting imperfect cover recognition blindly.
+Choose **Import Book from Photo (Bonus)**, then drag a clear book-cover image into the prompted terminal field. PNG, JPEG, and iPhone HEIC images are supported; HEIC is converted locally to a temporary PNG before analysis. Codex vision proposes a title, creator, and topic; you always confirm or correct those values before the item is saved as a physical text record. This makes the feature more capable than plain OCR while retaining human control.
 
 See [TECHNICAL_SPEC.md](TECHNICAL_SPEC.md) for the complete implementation specification.
 
