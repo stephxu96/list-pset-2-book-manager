@@ -6,7 +6,7 @@ Use this as a 2-3 minute narrated screen recording. It demonstrates the required
 
 1. Run `./scripts/setup.sh --install` once. Confirm that Gum is available.
 2. Use a large terminal window with readable text.
-3. Have a clear, front-facing cover photo for a title not already in the library ready to drag into the terminal.
+3. Have a clear photo containing one or more book covers or spines ready to drag into the terminal.
 4. Run `./app.sh`. Start the screen recording when the flip-book welcome animation appears; the open-book mark remains visible above the main-menu choices.
 
 ## Scene 1 — Introduction and browse (0:00-0:20)
@@ -31,11 +31,11 @@ Use this as a 2-3 minute narrated screen recording. It demonstrates the required
 
 ## Scene 3 — Import a book from a photo (0:35-0:55)
 
-**Action:** Choose **Import Book from Photo (Bonus)**. Drag the prepared cover image into the prompt, then accept or correct Codex’s title and creator suggestions. Select the remaining metadata and save it.
+**Action:** Choose **Import Book from Photo (Bonus)**. Drag the prepared image into the prompt. Let Codex show the complete detected-book list, confirm one batch import, select shared metadata once, and save the books.
 
 **Narration:**
 
-> I can also add a physical book from a cover photo. I drag the image into the terminal, and Codex vision proposes the title, creator, and topic. I confirm or correct those details before the item is saved, so the AI speeds up entry without taking control away from me.
+> I can also add several physical books from one photo. I drag the image into the terminal, and Codex vision tells me how many books it found and lists every legible title, creator, and topic. I confirm one batch import, then save them with shared metadata.
 
 **What this proves:** Optional Codex vision feature, image-drop input, human confirmation, metadata workflow, write through the data layer.
 
@@ -83,7 +83,6 @@ I have about 25 minutes and want a low-energy climbing video.
 
 - [ ] Gum menu is visible; do not use the plain-shell fallback in the recording.
 - [ ] Show Scenes 1-6.
-- [ ] Use an unowned title for the photo import.
 - [ ] Keep the terminal text readable and narration concise.
 - [ ] Do not show installation, debugging, passwords, or paths containing personal information.
 - [ ] Save the video in the repository or upload it elsewhere and add a clearly visible link to `README.md`.

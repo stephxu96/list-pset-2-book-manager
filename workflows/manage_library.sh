@@ -93,25 +93,41 @@ case "${1:-}" in
     ;;
   import-photo)
     photo_path="$(ask 'Drag a clear book-cover photo here:' '/path/to/photo.jpg')"
-    candidate="$("$PHOTO_IMPORT" "$photo_path")"
-    IFS='|' read -r guessed_title guessed_creator guessed_topic <<< "$candidate"
-    printf 'Codex found a possible title, creator, and topic. Please confirm or correct the details.\n'
-    title="$(ask_with_default 'Title:' "$guessed_title")"
-    creator="$(ask_with_default 'Creator:' "$guessed_creator")"
+    candidates="$("$PHOTO_IMPORT" "$photo_path")"
+    [[ -n "$candidates" ]] || { printf 'No legible books were found in that image.\n' >&2; exit 1; }
+    candidate_count="$(printf '%s\n' "$candidates" | sed '/^$/d' | wc -l | tr -d ' ')"
+    printf '\nCodex identified %s book(s):\n' "$candidate_count"
+    book_number=0
+    while IFS='|' read -r guessed_title guessed_creator guessed_topic; do
+      [[ -n "$guessed_title" && "$guessed_title" != 'unknown' ]] || continue
+      book_number=$((book_number + 1))
+      printf '  %s. %s — %s [%s]\n' "$book_number" "$guessed_title" "$guessed_creator" "$guessed_topic"
+    done <<< "$candidates"
+    action="$(choose 'Import these detected books?' 'Import all detected books' 'Cancel')"
+    if [[ "$action" == 'Cancel' ]]; then
+      printf 'Photo import cancelled; no books were added.\n'
+      exit 0
+    fi
+
     content_type="text"
     provider="Physical"
-    all_topics=(ai_ml entrepreneurship operations_processes mental_health career climbing physiology_health economics fiction other)
-    photo_topics=("$guessed_topic")
-    for topic_option in "${all_topics[@]}"; do
-      [[ "$topic_option" == "$guessed_topic" ]] || photo_topics+=("$topic_option")
-    done
-    topic="$(choose "Topic (Codex suggested: $guessed_topic)" "${photo_topics[@]}")"
-    status="$(choose 'Current status' want_to_read reading finished)"
-    reason="$(choose 'Why save it?' class recommendation news curiosity career health_exercise)"
-    energy="$(choose 'Energy level' low medium high)"
-    record="$("$METADATA" "$title" "$creator" "$content_type" "$provider" "$topic" "$status" "$reason" "$energy")"
-    "$DB" add "$record"
-    printf 'Imported from photo: %s\n' "$title"
+    status="$(choose 'Current status for imported books' want_to_read reading finished)"
+    reason="$(choose 'Why save these books?' class recommendation news curiosity career health_exercise)"
+    energy="$(choose 'Energy level for imported books' low medium high)"
+    import_count=0
+    while IFS='|' read -r guessed_title guessed_creator guessed_topic; do
+      [[ -n "$guessed_title" ]] || continue
+      [[ "$guessed_title" != 'unknown' ]] || { printf 'Skipped an unreadable title.\n'; continue; }
+      if "$DB" exists "$guessed_title"; then
+        printf 'Already in your library; skipped: %s\n' "$guessed_title"
+        continue
+      fi
+      record="$("$METADATA" "$guessed_title" "$guessed_creator" "$content_type" "$provider" "$guessed_topic" "$status" "$reason" "$energy")"
+      "$DB" add "$record"
+      import_count=$((import_count + 1))
+      printf 'Imported from photo: %s\n' "$guessed_title"
+    done <<< "$candidates"
+    printf 'Photo import complete: %s book(s) added.\n' "$import_count"
     ;;
   *)
     printf 'Usage: %s {browse|videos|search|add|import-photo}\n' "$0" >&2

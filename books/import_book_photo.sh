@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Optional Codex-vision component. Prints title|creator|topic from a cover image.
+# Optional Codex-vision component. Prints one title|creator|topic row per book.
 
 set -euo pipefail
 
@@ -34,12 +34,12 @@ if ! codex exec --ephemeral --sandbox read-only -C "$ROOT_DIR" \
   --image "$codex_image" \
   --output-schema "$SCHEMA" \
   --output-last-message "$result_file" \
-  'Identify the book shown on this cover. Return only the schema fields. Use the clearest visible title and author. Choose the single best matching topic. If a field is not readable, return "unknown" for it.' </dev/null >/dev/null 2>"$log_file"; then
-  printf 'Codex could not identify that cover. Try a clearer, front-facing image.\n' >&2
+  'Identify every distinct book with a legible cover or spine in this image. Return one entry per book. Use the clearest visible title and author. Choose the single best matching topic. Do not invent titles for unreadable books; omit them instead. Return only the schema fields.' </dev/null >/dev/null 2>"$log_file"; then
+  printf 'Codex could not identify books in that image. Try a clearer, front-facing image.\n' >&2
   exit 1
 fi
 
-title="$(jq -r '.title // "unknown"' "$result_file" | tr '|,' '  ')"
-creator="$(jq -r '.creator // "unknown"' "$result_file" | tr '|,' '  ')"
-topic="$(jq -r '.topic // "other"' "$result_file")"
-printf '%s|%s|%s\n' "$title" "$creator" "$topic"
+jq -r '.books[] | [(.title // "unknown"), (.creator // "unknown"), (.topic // "other")] | @tsv' "$result_file" |
+  while IFS=$'\t' read -r title creator topic; do
+    printf '%s|%s|%s\n' "$(printf '%s' "$title" | tr '|,' '  ')" "$(printf '%s' "$creator" | tr '|,' '  ')" "$topic"
+  done

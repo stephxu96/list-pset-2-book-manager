@@ -24,7 +24,7 @@ This library reflects a learning life that combines AI/ML, entrepreneurship, ope
 
 ## Bonus: import a book from a photo
 
-Choose **Import Book from Photo (Bonus)**, then drag a clear book-cover image into the prompted terminal field. PNG, JPEG, and iPhone HEIC images are supported; HEIC is converted locally to a temporary PNG before analysis. Codex vision proposes a title, creator, and topic; you always confirm or correct those values before the item is saved as a physical text record. This makes the feature more capable than plain OCR while retaining human control.
+Choose **Import Book from Photo (Bonus)**, then drag a clear photo containing one or more book covers or spines into the prompted terminal field. PNG, JPEG, and iPhone HEIC images are supported; HEIC is converted locally to a temporary PNG before analysis. Codex vision lists every legible title, creator, and topic, then you confirm one batch import. Existing titles are skipped automatically. This makes the feature more capable than plain OCR without repetitive per-book forms.
 
 See [TECHNICAL_SPEC.md](TECHNICAL_SPEC.md) for the complete implementation specification.
 
