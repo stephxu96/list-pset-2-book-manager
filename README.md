@@ -20,7 +20,7 @@ The app follows a visible UI -> workflow -> component -> data-layer -> storage s
 
 ## Personalization
 
-This library reflects a learning life that combines AI/ML, entrepreneurship, operations, mental health, career development, climbing, physical therapy, and economics. It treats Amazon as a provider with Kindle and Audible subformats, and supports physical guidebooks and Gunks App references alongside YouTube and Netflix video. The Learning Concierge presents matching saved items under “Start from your library,” then uses a small curated discovery catalog for an “Explore something new” shortlist. The required refinement step removes duplicate, completed, and already-saved items from that new-content shortlist.
+This library reflects a learning life that combines AI/ML, entrepreneurship, operations, mental health, career development, climbing, physical therapy, and economics. It treats Amazon as a provider with Kindle and Audible subformats, and supports physical guidebooks and Gunks App references alongside YouTube and Netflix video. The Learning Concierge presents matching saved items under “Start from your library,” then its Discovery Agent deliberately adds one or two adjacent topics for an “Explore something new” stretch pick. The required refinement step removes duplicate, completed, and already-saved items from that new-content shortlist.
 
 ## Bonus: import a book from a photo
 

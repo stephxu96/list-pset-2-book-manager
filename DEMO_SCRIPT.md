@@ -54,7 +54,7 @@ I have 20 minutes and want a low-energy climbing video.
 
 **Narration:**
 
-> This time I do not have a saved climbing video, so the app looks beyond my library. It returns a short new-content recommendation from my curated discovery catalog.
+> This time I do not have a saved climbing video, so the Discovery Agent adds adjacent topics—physiology and mental health—rather than simply finding another climbing video. It returns a short stretch recommendation from my curated discovery catalog and explains the connection.
 
 > The three agents’ outputs are combined and passed through a refinement pipeline. Refinement removes duplicates, completed items, and anything already in my library, leaving only genuinely new content in this “Explore something new” section.
 

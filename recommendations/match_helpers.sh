@@ -26,3 +26,31 @@ query_has_topic_signal() {
   done
   return 1
 }
+
+primary_topic_for_query() {
+  local query="$1"
+  local topic
+  for topic in ai_ml entrepreneurship operations_processes mental_health career climbing physiology_health economics fiction; do
+    if topic_matches_query "$query" "$topic"; then
+      printf '%s\n' "$topic"
+      return 0
+    fi
+  done
+  return 1
+}
+
+# The Discovery Agent uses this map to make a deliberate stretch beyond the
+# topic the user named, while staying within the user's wider learning life.
+adjacent_topics_for() {
+  case "$1" in
+    ai_ml) printf '%s\n' entrepreneurship operations_processes ;;
+    entrepreneurship) printf '%s\n' economics career ;;
+    operations_processes) printf '%s\n' ai_ml entrepreneurship ;;
+    mental_health) printf '%s\n' physiology_health career ;;
+    career) printf '%s\n' entrepreneurship mental_health ;;
+    climbing) printf '%s\n' physiology_health mental_health ;;
+    physiology_health) printf '%s\n' climbing mental_health ;;
+    economics) printf '%s\n' entrepreneurship operations_processes ;;
+    fiction) printf '%s\n' career mental_health ;;
+  esac
+}

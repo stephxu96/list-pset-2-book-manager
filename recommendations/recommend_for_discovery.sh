@@ -20,23 +20,40 @@ while [[ $# -gt 0 ]]; do
 done
 
 query_lc="$(printf '%s' "$query" | tr '[:upper:]' '[:lower:]')"
-query_has_topic_signal "$query_lc" && requires_topic_match=1 || requires_topic_match=0
+primary_topic="$(primary_topic_for_query "$query_lc" || true)"
+adjacent_topics=()
+if [[ -n "$primary_topic" ]]; then
+  while IFS= read -r adjacent_topic; do
+    adjacent_topics+=("$adjacent_topic")
+  done < <(adjacent_topics_for "$primary_topic")
+fi
+
 while IFS= read -r record; do
   IFS=',' read -r id title creator content_type provider provider_format topic location discipline duration item_energy status reason link <<< "$record"
   score=0
-  # Honor a requested medium exactly when the user has chosen one.
+  stretch_topic=""
   [[ "$format" != "any" && "$format" != "$content_type" ]] && continue
   topic_lc="$(printf '%s' "$topic" | tr '[:upper:]' '[:lower:]')"
-  if topic_matches_query "$query_lc" "$topic_lc"; then
-    semantic_match=1
+
+  if [[ -n "$primary_topic" ]]; then
+    for adjacent_topic in "${adjacent_topics[@]}"; do
+      if [[ "$topic_lc" == "$adjacent_topic" ]]; then
+        stretch_topic="$adjacent_topic"
+        break
+      fi
+    done
+    # A named topic means discovery must deliberately explore an adjacent one.
+    [[ -n "$stretch_topic" ]] || continue
     score=$((score + 2))
-  else
-    semantic_match=0
   fi
-  [[ "$requires_topic_match" -eq 1 && "$semantic_match" -eq 0 ]] && continue
+
   [[ "$format" == "any" || "$format" == "$content_type" ]] && score=$((score + 1))
   [[ "$energy" == "$item_energy" ]] && score=$((score + 1))
   if [[ "$score" -ge 2 ]]; then
-    printf 'discovery|New option from your curated discovery catalog.|%s\n' "$record"
+    if [[ -n "$primary_topic" ]]; then
+      printf 'discovery|Stretch pick: connects %s to %s, an adjacent Discovery Agent topic.|%s\n' "$primary_topic" "$stretch_topic" "$record"
+    else
+      printf 'discovery|New option from your curated discovery catalog.|%s\n' "$record"
+    fi
   fi
 done < <("$DB" discovery-list)
