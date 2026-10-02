@@ -29,17 +29,7 @@ Use this as a 2-3 minute narrated screen recording. It demonstrates the required
 
 **What this proves:** Search workflow, Book component, data-layer boundary.
 
-## Scene 3 — Import a book from a photo (0:35-0:55)
-
-**Action:** Choose **Import Book from Photo (Bonus)**. Drag the prepared image into the prompt. Let Codex show the complete detected-book list, confirm one batch import, select shared metadata once, and save the books.
-
-**Narration:**
-
-> I can also add several physical books from one photo. I drag the image into the terminal, and Codex vision tells me how many books it found and lists every legible title, creator, and topic. I confirm one batch import, then save them with shared metadata.
-
-**What this proves:** Optional Codex vision feature, image-drop input, human confirmation, metadata workflow, write through the data layer.
-
-## Scene 4 — Saved-first Concierge recommendation (0:55-1:25)
+## Scene 3 — Saved-first Concierge recommendation (0:35-1:05)
 
 **Action:** Choose **Ask Learning Concierge**. Enter:
 
@@ -55,7 +45,7 @@ I need PM career advice in a medium-energy book.
 
 **What this proves:** Natural-language input, personalization, parallelization, `$!`, `wait`, streaming/progress, saved-first matching.
 
-## Scene 5 — New video discovery (1:25-1:55)
+## Scene 4 — New video discovery (1:05-1:35)
 
 **Action:** Choose **Ask Learning Concierge** again. Enter:
 
@@ -71,7 +61,17 @@ I have about 25 minutes and want a low-energy climbing video.
 
 **What this proves:** Video-content support, discovery behavior, a meaningful Bash pipe, refinement, clean final shortlist.
 
-## Scene 6 — Architecture close (1:55-2:10)
+## Scene 5 — Import a book from a photo (1:35-2:00)
+
+**Action:** Choose **Import Book from Photo (Bonus)**. Drag the prepared image into the prompt. Let Codex show the complete detected-book list, confirm one batch import, select shared metadata once, and save the books.
+
+**Narration:**
+
+> I can also add several physical books from one photo. I drag the image into the terminal, and Codex vision tells me how many books it found and lists every legible title, creator, and topic. I confirm one batch import, then save them with shared metadata.
+
+**What this proves:** Optional Codex vision feature, image-drop input, human confirmation, metadata workflow, write through the data layer.
+
+## Scene 6 — Architecture close (2:00-2:10)
 
 **Action:** Return to the main menu, or briefly show the project folder tree in a second terminal if desired.
 
