@@ -48,6 +48,23 @@ choose() {
   fi
 }
 
+provider_for_type() {
+  case "$1" in
+    text) choose 'Where is it from?' Amazon Physical Other ;;
+    audio) choose 'Where is it from?' Amazon Other ;;
+    video) choose 'Where is it from?' YouTube Netflix Other ;;
+    guidebook) choose 'Where is it from?' Physical GunksApp Other ;;
+  esac
+}
+
+status_for_type() {
+  case "$1" in
+    text|guidebook) choose 'Current status' want_to_read reading finished ;;
+    audio) choose 'Current status' want_to_listen listening listened ;;
+    video) choose 'Current status' want_to_watch watching watched ;;
+  esac
+}
+
 case "${1:-}" in
   browse)
     "$LIBRARY_UI" show
@@ -63,9 +80,9 @@ case "${1:-}" in
     title="$(ask 'Title:' 'Required')"
     creator="$(ask 'Creator:' 'Author, channel, or creator')"
     content_type="$(choose 'Content type' text audio video guidebook)"
-    provider="$(choose 'Provider' Amazon YouTube Netflix Physical GunksApp Other)"
+    provider="$(provider_for_type "$content_type")"
     topic="$(choose 'Topic' ai_ml entrepreneurship operations_processes mental_health career climbing physiology_health economics fiction other)"
-    status="$(choose 'Current status' want_to_read reading finished want_to_listen listening listened want_to_watch watching watched)"
+    status="$(status_for_type "$content_type")"
     reason="$(choose 'Why save it?' class recommendation news curiosity career health_exercise)"
     energy="$(choose 'Energy level' low medium high)"
     record="$("$METADATA" "$title" "$creator" "$content_type" "$provider" "$topic" "$status" "$reason" "$energy")"
@@ -81,7 +98,12 @@ case "${1:-}" in
     creator="$(ask_with_default 'Creator:' "$guessed_creator")"
     content_type="text"
     provider="Physical"
-    topic="$(choose "Topic (Codex suggested: $guessed_topic)" "$guessed_topic" ai_ml entrepreneurship operations_processes mental_health career climbing physiology_health economics fiction other)"
+    all_topics=(ai_ml entrepreneurship operations_processes mental_health career climbing physiology_health economics fiction other)
+    photo_topics=("$guessed_topic")
+    for topic_option in "${all_topics[@]}"; do
+      [[ "$topic_option" == "$guessed_topic" ]] || photo_topics+=("$topic_option")
+    done
+    topic="$(choose "Topic (Codex suggested: $guessed_topic)" "${photo_topics[@]}")"
     status="$(choose 'Current status' want_to_read reading finished)"
     reason="$(choose 'Why save it?' class recommendation news curiosity career health_exercise)"
     energy="$(choose 'Energy level' low medium high)"

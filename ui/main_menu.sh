@@ -10,7 +10,6 @@ options=(
   "Import Book from Photo (Bonus)"
   "Search Library"
   "Ask Learning Concierge"
-  "Get Recommendations"
   "Quit"
 )
 

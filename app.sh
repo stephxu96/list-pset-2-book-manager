@@ -37,7 +37,7 @@ while true; do
     "Search Library")
       run_flow "$ROOT_DIR/workflows/manage_library.sh" search
       ;;
-    "Ask Learning Concierge"|"Get Recommendations")
+    "Ask Learning Concierge")
       run_flow "$ROOT_DIR/workflows/get_recommendations.sh"
       ;;
     "Quit"|"")
