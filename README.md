@@ -14,6 +14,14 @@ From the project folder, validate dependencies first. Add `--install` to install
 
 Gum is the required, intended interface. The application has a basic shell-menu fallback only so developers can diagnose the project before installing dependencies. The optional photo-import bonus uses the locally authenticated Codex CLI and `jq`; it sends the selected cover image to Codex vision for analysis.
 
+## Test
+
+Run the deterministic component tests without calling Codex vision or modifying your library:
+
+```bash
+./tests/run_tests.sh
+```
+
 ## Architecture
 
 The app follows a visible UI -> workflow -> component -> data-layer -> storage structure. `app.sh` only routes top-level choices. UI scripts handle prompts and presentation; workflow scripts coordinate operations; book and recommendation scripts perform small focused tasks; and `data/book_database.sh` is the only component that reads or writes `data/books.csv`. The recommendation workflow launches three independent agents concurrently, combines their results, and pipes them through the required cleanup component before displaying the shortlist.

@@ -35,6 +35,10 @@ ask_with_default() {
   fi
 }
 
+normalize_terminal_input() {
+  printf '%s' "$1" | tr -d '\r' | sed 's/^[[:space:]]*//; s/[[:space:]]*$//'
+}
+
 choose() {
   local label="$1"
   shift
@@ -74,8 +78,14 @@ case "${1:-}" in
     "$LIBRARY_UI" videos
     ;;
   search)
-    term="$(ask 'Search your library:' 'AI, climbing, Audible, strategy...')"
-    results="$("$SEARCH" "$term")"
+    term="$(normalize_terminal_input "$(ask 'Search your library:' 'AI, climbing, Audible, strategy...')")"
+    results="$(printf '%s\n' "$term" | "$SEARCH")"
+    if [[ -n "$results" ]]; then
+      match_count="$(printf '%s\n' "$results" | sed '/^$/d' | wc -l | tr -d ' ')"
+    else
+      match_count=0
+    fi
+    printf '\nSearch results for "%s" — %s match(es)\n' "$term" "$match_count"
     "$LIBRARY_UI" records "$results"
     ;;
   add)

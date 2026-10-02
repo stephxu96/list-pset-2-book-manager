@@ -7,7 +7,7 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SCHEMA="$ROOT_DIR/books/book_metadata_schema.json"
-photo_path="$(printf '%s' "$1" | sed -e 's/^file:\/\///' -e 's/^"//' -e 's/"$//' -e 's/\\ / /g')"
+photo_path="$(printf '%s' "$1" | sed -e 's/^file:\/\///' -e 's/^"//' -e 's/"$//' -e 's/\\ / /g' -e 's/\\_/_/g')"
 [[ -f "$photo_path" ]] || { printf 'Photo not found: %s\n' "$photo_path" >&2; exit 1; }
 command -v codex >/dev/null 2>&1 || { printf 'Codex CLI is required for photo import. Install and sign in to Codex first.\n' >&2; exit 1; }
 command -v jq >/dev/null 2>&1 || { printf 'jq is required to read Codex metadata output.\n' >&2; exit 1; }
@@ -21,13 +21,13 @@ trap cleanup EXIT
 extension="$(printf '%s' "${photo_path##*.}" | tr '[:upper:]' '[:lower:]')"
 if [[ "$extension" == "heic" || "$extension" == "heif" ]]; then
   command -v sips >/dev/null 2>&1 || { printf 'HEIC import requires macOS sips or a PNG/JPEG conversion.\n' >&2; exit 1; }
-  temp_dir="$(mktemp -d "${TMPDIR:-/tmp}/learning-library-codex.XXXXXX")"
+  temp_dir="$(mktemp -d /tmp/learning-library-codex.XXXXXX)"
   codex_image="$temp_dir/cover.png"
   sips -s format png "$photo_path" --out "$codex_image" >/dev/null
 fi
 
-result_file="$(mktemp "${TMPDIR:-/tmp}/learning-library-codex-result.XXXXXX")"
-log_file="$(mktemp "${TMPDIR:-/tmp}/learning-library-codex-log.XXXXXX")"
+result_file="$(mktemp /tmp/learning-library-codex-result.XXXXXX)"
+log_file="$(mktemp /tmp/learning-library-codex-log.XXXXXX)"
 trap 'rm -f "$result_file" "$log_file"; cleanup' EXIT
 
 if ! codex exec --ephemeral --sandbox read-only -C "$ROOT_DIR" \
