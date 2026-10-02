@@ -15,27 +15,8 @@ prompt() {
   fi
 }
 
-choose() {
-  local label="$1"
-  shift
-  if command -v gum >/dev/null 2>&1; then
-    gum choose --header "$label" "$@"
-  else
-    printf '%s\n' "$label" >&2
-    select value in "$@"; do
-      printf '%s\n' "${value:-$1}"
-      break
-    done
-  fi
-}
-
 collect_context() {
-  local query energy format minutes
-  query="$(prompt 'What do you want to learn or watch?' 'e.g. low-energy climbing video for 20 minutes')"
-  energy="$(choose 'Energy level' low medium high)"
-  format="$(choose 'Preferred format' any text audio video guidebook)"
-  minutes="$(prompt 'Available minutes (optional)' 'e.g. 25')"
-  printf '%s|%s|%s|%s\n' "$query" "$energy" "$format" "$minutes"
+  prompt 'What should I learn or watch next?' 'e.g. I have 20 minutes and want a low-energy climbing video'
 }
 
 show_records() {

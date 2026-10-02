@@ -33,15 +33,12 @@ Use this as a 2-3 minute narrated screen recording. It demonstrates the required
 **Action:** Choose **Ask Learning Concierge**. Enter:
 
 ```text
-Question: I need PM career advice
-Energy: medium
-Format: text
-Minutes: [leave blank]
+I need PM career advice in a medium-energy book.
 ```
 
 **Narration:**
 
-> The Learning Concierge accepts a natural-language question plus my available energy and preferred format. It starts three recommendation agents in parallel: one considers my history, one matches my interests, and one looks for discovery options. The status line shows that work is happening while the agents run.
+> The Learning Concierge accepts one natural-language request and extracts my available energy, preferred format, and time from it. It starts three recommendation agents in parallel: one considers my history, one matches my interests, and one looks for discovery options. The status line shows that work is happening while the agents run.
 
 > Because I already own relevant books, it gives me a “Start from your library” shortlist, including my PM-career and PM-interview books.
 
@@ -52,10 +49,7 @@ Minutes: [leave blank]
 **Action:** Choose **Ask Learning Concierge** again. Enter:
 
 ```text
-Question: I have 20 minutes and want a low-energy climbing video
-Energy: low
-Format: video
-Minutes: 20
+I have 20 minutes and want a low-energy climbing video.
 ```
 
 **Narration:**

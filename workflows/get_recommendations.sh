@@ -9,9 +9,15 @@ HISTORY="$ROOT_DIR/recommendations/recommend_from_history.sh"
 INTERESTS="$ROOT_DIR/recommendations/recommend_from_interests.sh"
 DISCOVERY="$ROOT_DIR/recommendations/recommend_for_discovery.sh"
 REFINE="$ROOT_DIR/recommendations/refine_recommendations.sh"
+PARSE_REQUEST="$ROOT_DIR/recommendations/parse_request.sh"
 
-context="$("$SCREEN" collect-context)"
-IFS='|' read -r query energy format minutes <<< "$context"
+query="$("$SCREEN" collect-context)"
+IFS='|' read -r energy format minutes <<< "$("$PARSE_REQUEST" --query "$query")"
+
+printf 'I heard: %s energy' "$energy"
+[[ "$format" != "any" ]] && printf ' · %s' "$format"
+[[ -n "$minutes" ]] && printf ' · %s minutes' "$minutes"
+printf '\n'
 
 work_dir="$(mktemp -d "${TMPDIR:-/tmp}/learning-library.XXXXXX")"
 cleanup() { rm -rf "$work_dir"; }
