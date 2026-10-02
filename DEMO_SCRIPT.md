@@ -49,7 +49,7 @@ I need PM career advice in a medium-energy book.
 **Action:** Choose **Ask Learning Concierge** again. Enter:
 
 ```text
-I have 20 minutes and want a low-energy climbing video.
+I have about 25 minutes and want a low-energy climbing video.
 ```
 
 **Narration:**
