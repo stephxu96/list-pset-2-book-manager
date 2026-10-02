@@ -1,0 +1,11 @@
+id,title,creator,content_type,provider,provider_format,topic,location,discipline,duration_or_pages,energy,status,reason_saved,link
+d001,Introduction to Artificial Intelligence with Python,Harvard CS50,video,YouTube,YouTube,ai_ml,,,45 min,medium,want_to_watch,career,
+d002,The AI Dilemma,Center for Humane Technology,video,YouTube,YouTube,ai_ml,,,28 min,medium,want_to_watch,news,
+d003,The Effective Executive,Peter Drucker,text,Other,Book,operations_processes,,,,medium,want_to_read,career,
+d004,The Mental Health Toolkit,Dr. Alice Boyes,audio,Other,Audio,mental_health,,,,low,want_to_listen,health_exercise,
+d005,The Personal MBA,Josh Kaufman,text,Other,Book,entrepreneurship,,,,high,want_to_read,career,
+d006,The Economics of Everyday Things,Freakonomics Radio,video,YouTube,YouTube,economics,,,20 min,low,want_to_watch,curiosity,
+d007,Movement: Functional Range Conditioning,Other,video,YouTube,YouTube,physiology_health,,,22 min,low,want_to_watch,health_exercise,
+d008,Climbing Training Fundamentals,Lattice Training,video,YouTube,YouTube,climbing,,,18 min,low,want_to_watch,health_exercise,
+d009,How to Build a Career in Product Management,Product School,video,YouTube,YouTube,career,,,30 min,medium,want_to_watch,career,
+d010,The Lean Startup,Eric Ries,audio,Other,Audio,entrepreneurship,,,,medium,want_to_listen,career,

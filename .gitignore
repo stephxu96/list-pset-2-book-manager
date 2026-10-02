@@ -1,0 +1,6 @@
+# Runtime-only recommendation outputs
+tmp/
+*.tmp
+
+# macOS Finder metadata
+.DS_Store
