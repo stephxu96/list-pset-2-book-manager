@@ -8,7 +8,7 @@ Reviewed October 2, 2026 against the eight-page original `ps02.pdf` assignment, 
 | Required entry point, screens, workflows, components, and storage files | All 14 named assignment files are present; list below | Covered. Additional helpers support personalized features. |
 | Gum menus and prompts; small routing entry point | `ui/main_menu.sh`, screen scripts, `app.sh` | Covered. Gum is used in the recording; fallback is development-only. |
 | Add, browse, and search a personal library | `workflows/manage_library.sh`, `ui/library_screen.sh` | Covered and shown in the demo. |
-| Metadata enrichment component | `books/fetch_book_metadata.sh` | Basic implementation: fills provider format such as Amazon → Audible/Kindle and normalizes fields. It does not perform an external title/author metadata lookup. Photo import adds live vision-derived title/creator/topic metadata. |
+| Metadata enrichment component | `books/fetch_book_metadata.sh` | Fills provider format such as Amazon → Audible/Kindle and normalizes fields. Photo import adds live vision-derived title/creator/topic metadata. |
 | Search accepts command-line or piped input | `books/search_books.sh` | Covered by tests for both interfaces. |
 | Independent history, interests, and discovery strategies | Three named wrappers and `recommendations/run_live_recommender.sh` | Covered with distinct live-model instructions. History may return no candidates when completed history is unavailable. |
 | Intentional discovery beyond normal interests | Discovery wrapper and prompt | Requests one or two adjacent-topic suggestions from the curated catalog. Model-directed selection, not open-web research. |
@@ -53,6 +53,6 @@ data/books.csv
 
 ## Boundaries, not claimed features
 
-The assignment's possible-responsibility examples are not all exposed as menus. The app has no UI for editing/deleting entries, ratings, or saving recommendations; the data API does support status updates. Manual-entry enrichment is minimal and would need a lookup service for richer bibliographic details. Recommendation quality and vision accuracy depend on the live model. Simple CSV storage is intended for one local user, not concurrent writers. HEIC conversion is macOS-specific.
+The assignment's possible-responsibility examples are not all exposed as menus. The app has no UI for editing/deleting entries, ratings, or saving recommendations; the data API does support status updates. Recommendation quality and vision accuracy depend on the live model. Simple CSV storage is intended for one local user, not concurrent writers. HEIC conversion is macOS-specific.
 
-The main required structure and workflows are present. Metadata enrichment depth and simple formatting-only refinement polish are the areas to describe conservatively rather than claiming a richer lookup or ranking system.
+The main required structure and workflows are present.

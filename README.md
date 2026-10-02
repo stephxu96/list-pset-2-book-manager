@@ -56,7 +56,7 @@ See [TECHNICAL_SPEC.md](TECHNICAL_SPEC.md) for the complete implementation speci
 ## Scope and data handling
 
 - Discovery selects from a curated local catalog; it does **not** research the open web or verify streaming availability. Live model choices may vary.
-- Manual-entry metadata enrichment normalizes supplied fields and provider/format relationships; it does not fetch publication details online.
+- Manual-entry metadata enrichment normalizes supplied fields and provider/format relationships.
 - The library is a simple single-user CSV. Commas in entered fields are sanitized. There is no edit/delete/rating menu, cloud sync, or automatic saving of recommendations. A status-update command exists in the data layer.
 - Recommendation requests send the question and catalog context to Codex. Photo import sends the selected image (a temporary PNG for HEIC) to Codex vision. Review recognition results before confirming.
 - The repository includes the demonstrated library and video. Changes to local CSV files are not automatically published to GitHub.

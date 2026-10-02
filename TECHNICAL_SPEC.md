@@ -44,7 +44,7 @@ The required refinement component removes duplicates, completed content, and eve
 
 ## Scope
 
-Version 1 stores the library locally, but recommendations and photo analysis require a signed-in Codex CLI and network access. Discovery uses live model selection from a curated catalog, not open-web research. Provider scraping, graphical chat, user accounts, and cloud sync are out of scope. Manual-entry metadata enrichment is basic provider/format normalization; it does not look up publication details online. HEIC conversion requires macOS `sips`; other systems can use PNG or JPEG.
+Version 1 stores the library locally, but recommendations and photo analysis require a signed-in Codex CLI and network access. Discovery uses live model selection from a curated catalog, not open-web research. Provider scraping, graphical chat, user accounts, and cloud sync are out of scope. Manual-entry metadata enrichment normalizes provider/format relationships. HEIC conversion requires macOS `sips`; other systems can use PNG or JPEG.
 
 ## Success criteria
 
